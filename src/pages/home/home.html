@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button end menuToggle>
+    <button ion-button start menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Home</ion-title>
@@ -8,7 +8,6 @@
 </ion-header>
 
 <ion-content padding>
-
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+    <p>{{user.name}}</p>
+<!--    <button *ngIf="auth.isAuthenticated" (click)="auth.isAuthenticated">Login</button>-->
 </ion-content>
