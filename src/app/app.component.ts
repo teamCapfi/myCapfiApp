@@ -37,7 +37,7 @@ export class MyApp {
 
   listenToLogInEvents(){
     this.events.subscribe('user:loggout',()=>{
-      this.nav.setRoot('LoginPage');
+      this.rootPage = 'LoginPage';
     });
 
     this.events.subscribe('user:loggin',()=>{
