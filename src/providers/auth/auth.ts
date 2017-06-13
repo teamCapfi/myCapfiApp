@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -24,7 +24,7 @@ export class AuthProvider {
 
   //Creating new Auth0 lock widget
   public lock = new Auth0Lock(auth0Vars.AUTH0_CLIENT_ID, auth0Vars.AUTH0_DOMAIN, optionsLock);
-
+  private _zone : NgZone;
 
   constructor(
     public afAuth: AngularFireAuth,
@@ -32,11 +32,16 @@ export class AuthProvider {
     public _platform: Platform,
     public events: Events) {
 
+      this._zone = new NgZone({});
     this.authState = afAuth.authState;
 
     afAuth.auth.onAuthStateChanged((user) => {
-      this.currentUser = user;
-      this.isAuthenticated;
+      this._zone.run(()=>{
+        console.log("onAuthChanged", user);
+        this.currentUser = user;
+        this.isAuthenticated ? this.loggedIn() : this.loggedOut();
+      })
+
     });
     this._onLockEvents();
   }
@@ -95,6 +100,10 @@ export class AuthProvider {
   //Publish an event across the app that the user is loggedin
   loggedIn() {
     this.events.publish('user:loggin');
+  }
+
+  loggedOut(){
+    this.events.publish('user:loggout');
   }
 
   //display the lock widget from Auth0

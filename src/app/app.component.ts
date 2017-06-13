@@ -1,6 +1,6 @@
 import { HomePage } from './../pages/home/home';
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from "../providers/auth/auth";
@@ -12,11 +12,11 @@ import { AuthProvider } from "../providers/auth/auth";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public auth : AuthProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public auth : AuthProvider, public events : Events) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -24,16 +24,25 @@ export class MyApp {
       { title: 'Home', component: HomePage }
     ];
 
+    this.listenToLogInEvents();
+
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      if(!this.auth.isAuthenticated){
-        this.auth.login();
-      }
     });
+  }
+
+  listenToLogInEvents(){
+    this.events.subscribe('user:loggout',()=>{
+      this.nav.setRoot('LoginPage');
+    });
+
+    this.events.subscribe('user:loggin',()=>{
+      this.rootPage = 'HomePage';
+    })
   }
 
   openPage(page) {

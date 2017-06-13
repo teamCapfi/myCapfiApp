@@ -1,12 +1,8 @@
+import { AuthProvider } from './../../providers/auth/auth';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -14,11 +10,19 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class LoginPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public auth : AuthProvider, public events : Events) {
+
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  listenToLogEvents(){
+    this.events.subscribe('user:loggin',()=>{
+      this.navCtrl.setRoot('HomePage');
+    })
+  }
+
+
+  ionViewDidEnter(){
+    this.auth.login();
   }
 
 }

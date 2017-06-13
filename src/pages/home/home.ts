@@ -1,7 +1,7 @@
 import { AuthProvider } from './../../providers/auth/auth';
 import { UserProvider } from './../../providers/user/user';
-import { Component } from '@angular/core';
-import { NavController, IonicPage } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, IonicPage, Content } from 'ionic-angular';
 
 
 @IonicPage({
@@ -12,9 +12,14 @@ import { NavController, IonicPage } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
-
+  @ViewChild(Content) content : Content;
   constructor(public navCtrl: NavController, public user : UserProvider, public auth : AuthProvider) {
 
+  }
+
+  ionViewDidEnter(){
+    console.log('auiq');
+    this.content.resize();
   }
 
 
