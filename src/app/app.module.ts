@@ -8,7 +8,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from "../environment/firebase/config";
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+
 
 
 import { StatusBar } from '@ionic-native/status-bar';
